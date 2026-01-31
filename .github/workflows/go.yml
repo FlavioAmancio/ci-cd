@@ -7,38 +7,49 @@ on:
     branches: [ '*' ]
 
 jobs:
+
   test:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
     env:
-      DB_HOST: localhost
-      DB_PORT: 5432
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_NAME: root
-
+      HOST: localhost
+      PORT: 5432
+      USER: root
+      PASSWORD: root
+      DBNAME: root
+    strategy:
+      matrix:
+        go_version: ['1.18', '1.17', '>=1.18']
+        os: ['ubuntu-latest', 'ubuntu-18.04']
     steps:
     - uses: actions/checkout@v3
 
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: '1.18'
-
-    - name: Build DB
-      run: docker compose build
-
-    - name: Start DB
-      run: docker compose up -d
-
-    - name: Wait for Postgres
-      run: |
-        for i in {1..15}; do
-          nc -z localhost 5432 && echo "Postgres is up!" && exit 0
-          echo "Waiting for Postgres..."
-          sleep 2
-        done
-        echo "Postgres did not start in time" && exit 1
+        go-version: ${{ matrix.go_version }}
+      
+    - name: Build-DB
+      run: docker-compose build
+      
+    - name: Create-DB
+      run: docker-compose up -d
 
     - name: Test
-      run: go test ./... -v
+      run: go test -v main_test.go 
+      
+  
+  build:
+    needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'ubuntu-18.04']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: go build -v main.go
+
+  docker:
+    needs: build
+    uses: ./.github/workflows/Docker.yml
+    secrets: inherit

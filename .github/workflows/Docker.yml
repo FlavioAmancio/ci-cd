@@ -33,4 +33,4 @@ jobs:
           # Push is a shorthand for --output=type=registry
           push: true
           # List of tags
-          tags: FlavioAmancio/go_ci:${{github.ref_name}}           
+          tags: flavioamanciodevops/go_ci:${{github.ref_name}}           

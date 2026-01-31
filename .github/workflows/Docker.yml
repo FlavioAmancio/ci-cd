@@ -16,7 +16,7 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v2
         with:
-          username: FlavioAmancio
+          username: flavioamanciodevops
           password: ${{ secrets.PASSWORD_DOCKER_HUB }}
 
       - name: Build Docker Image

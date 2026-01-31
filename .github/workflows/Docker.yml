@@ -21,4 +21,4 @@ jobs:
   # Username used to log against the Docker registry
           username: FlavioAmancio
   # Password or personal access token used to log against the Docker registry
-          password: PASSWORD_DOCKER_HUB
+          password: ${{secrets.PASSWORD_DOCKER_HUB}}

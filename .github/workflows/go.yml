@@ -12,7 +12,7 @@ jobs:
 
     env:
       HOST: localhost
-      PORT: 5432
+      DBPORT: 5432
       USER: root
       PASSWORD: root
       DBNAME: root
@@ -64,4 +64,9 @@ jobs:
   docker:
     needs: build
     uses: ./.github/workflows/Docker.yml
+    secrets: inherit
+
+  Deploy_EC2:
+    needs: build
+    uses: ./.github/workflows/EC2.yml
     secrets: inherit

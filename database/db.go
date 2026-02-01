@@ -23,7 +23,7 @@ func ConectaComBancoDeDados() {
 	port := os.Getenv("PORT")
 
 	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		"host=%s user=%s password=%s dbname=%s dbport=%s sslmode=disable",
 		host, user, password, dbname, port,
 	)
 
